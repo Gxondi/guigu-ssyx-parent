@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.ssyx.activity.mapper.CouponInfoMapper">
+    <resultMap id="CouponInfoMap" type="com.atguigu.ssyx.model.activity.CouponInfo" autoMapping="true"></resultMap>
+
+    <select id="findCouponBySkuIdAndUserId" resultMap="CouponInfoMap">
+        select *
+        from coupon_info cinfo
+                 left join coupon_range crange on cinfo.id = crange.coupon_id
+                 left join coupon_use cuse on cinfo.id = cuse.coupon_id and cuse.user_id = #{userId}
+        where (
+                          cinfo.range_type = 1
+                      or (crange.range_type = 2 and crange.range_id = #{skuId})
+                      or (crange.range_type = 3 and crange.range_id = #{categoryId})
+                  )
+    </select>
+    <select id="findCouponListByUserId" resultMap="CouponInfoMap">
+        select *
+        from coupon_info info
+        inner join coupon_use cuse on info.id = cuse.coupon_id
+        <where>
+            and cuse.user_id = #{userId}
+            and info.expire_time >= now()
+        </where>
+        order by cuse.create_time desc
+    </select>
+</mapper>

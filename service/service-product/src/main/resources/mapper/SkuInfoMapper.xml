@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.ssyx.product.mapper.SkuInfoMapper">
+    <resultMap id="skuInfoMap" type="com.atguigu.ssyx.model.product.SkuInfo" autoMapping="true"></resultMap>
+    <select id="checkStock" resultMap="skuInfoMap">
+        select * from sku_info where id = #{skuId} and stock - lock_stock >= #{skuNum}
+    </select>
+
+    <update id="lockStock">
+        update sku_info set lock_stock = lock_stock + #{skuNum} where id = #{skuId}
+    </update>
+
+    <update id="unlockStock">
+        update sku_info set lock_stock = lock_stock - #{skuNum} where id = #{skuId}
+    </update>
+</mapper>

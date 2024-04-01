@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: service-payment
+    #        profile最主要的目的就是可以区分不同的环境，进而对不同环境进行配置。比如开发环境、测试环境、生产环境等。
+  profiles:
+    #dev表示开发环境
+    active: dev
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+
+#  当profile为default时，只使用application.yaml,
+#  SpringBoot默认Server端口为8080。将当前profile激活为dev时,
+#  SpringBoot就会额外加载application-dev.yaml 后合并到application.yaml中，
+#  若其中有相同的配置则覆盖掉。
